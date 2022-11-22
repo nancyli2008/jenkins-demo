@@ -1,28 +1,28 @@
 pipeline{
-      // 定义groovy脚本中使用的环境变量
+      // groovy Script で使用する環境パスを定義します
       environment{
-        // 将构建任务中的构建参数转换为环境变量
+        // 構成タスクにある構成パラメータを環境変数に転換します
 		IMAGE = sh(returnStdout: true,script: 'echo registry.$image_region.aliyuncs.com/$image_namespace/$image_reponame:$image_tag').trim()
 		BRANCH =  sh(returnStdout: true,script: 'echo $branch').trim()
       }
 
-      // 定义本次构建使用哪个标签的构建环境，本示例中为 “slave-pipeline”
+      // 今回は土のラベルの構成環境を使用するか定義します。本デモは “slave-pipeline”
       agent{
         node{
           label 'slave-pipeline'
         }
       }
 
-      // "stages"定义项目构建的多个模块，可以添加多个 “stage”， 可以多个 “stage” 串行或者并行执行
+      // "stages"プロジェクト構成の多数のモジュールを定義します。多数の “stage”を追加可能です。多数の “stage”は行列または並列で実行できます
       stages{
-        // 定义第一个stage， 完成克隆源码的任务
+        // 一つ目のstageを定義します。コードクローンタスクを完成します
         stage('Git'){
           steps{
-            git branch: '${BRANCH}', credentialsId: '', url: 'https://github.com/haoshuwei/jenkins-demo.git'
+            git branch: '${BRANCH}', credentialsId: '', url: 'https://github.com/nancyli2008/jenkins-demo.git'
           }
         }
 
-        // 添加第二个stage， 运行源码打包命令
+        //二つ目のstageを追加します， コードパッケージコマンドを実行します
         // stage('Package'){
         //   steps{
         //       container("maven") {
@@ -32,7 +32,7 @@ pipeline{
         // }
 
 
-        // 添加第三个stage, 运行容器镜像构建和推送命令， 用到了environment中定义的groovy环境变量
+        // 三つ目のstageを追加します， コンテナー作成とコマンドPushするを実行します。environmentに定義しているgroovy環境変数を使用しています
         // stage('Image Build And Publish'){
         //   steps{
         //       container("kaniko") {
@@ -41,7 +41,7 @@ pipeline{
         //   }
         // }
 
-        // 添加第四个stage, 部署应用到指定k8s集群
+        // 四つ目のstageを追加します, アプリケーションを指定のK8sクラスターへデプロイします
         stage('Deploy to Kubernetes') {
           steps {
             container('kubectl') {
