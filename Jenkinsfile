@@ -23,23 +23,23 @@ pipeline{
         }
 
         //二つ目のstageを追加します， コードパッケージコマンドを実行します
-        // stage('Package'){
-        //   steps{
-        //       container("maven") {
-        //           sh "mvn package -B -DskipTests"
-        //       }
-        //   }
-        // }
+      stage('Package'){
+          steps{
+             container("maven") {
+              sh "mvn package -B -DskipTests"
+             }
+           }
+         }
 
 
         // 三つ目のstageを追加します， コンテナー作成とコマンドPushするを実行します。environmentに定義しているgroovy環境変数を使用しています
-        // stage('Image Build And Publish'){
-        //   steps{
-        //       container("kaniko") {
-        //           sh "kaniko -f `pwd`/Dockerfile -c `pwd` --destination=${IMAGE} --skip-tls-verify"
-        //       }
-        //   }
-        // }
+        stage('Image Build And Publish'){
+          steps{
+            container("kaniko") {
+                 sh "kaniko -f `pwd`/Dockerfile -c `pwd` --destination=${IMAGE} --skip-tls-verify"
+              }
+          }
+       }
 
         // 四つ目のstageを追加します, アプリケーションを指定のK8sクラスターへデプロイします
         stage('Deploy to Kubernetes') {
