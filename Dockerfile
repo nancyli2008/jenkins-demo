@@ -1,5 +1,5 @@
-FROM registry-intl.ap-northeast-1.aliyuncs.com/jenkins-ask/jenkins-java-demo/openjdk:8-jdk-slim
-# FROM registry.cn-beijing.aliyuncs.com/haoshuwei24/openjdk:8-jdk-slim
+# FROM registry-intl.ap-northeast-1.aliyuncs.com/jenkins-ask/jenkins-java-demo/openjdk:8-jdk-slim
+FROM registry.cn-beijing.aliyuncs.com/haoshuwei24/openjdk:8-jdk-slim
 ENV PORT 8080
 ENV CLASSPATH /opt/lib
 EXPOSE 8080
