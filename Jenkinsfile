@@ -2,7 +2,7 @@ pipeline {
     // groovy Script で使用する環境パスを定義します
     environment {
         // 構成タスクにある構成パラメータを環境変数に転換します
-        IMAGE = sh(returnStdout: true, script: 'echo registry.$image_region.aliyuncs.com/$image_namespace/$image_reponame:$image_tag').trim()
+        IMAGE = sh(returnStdout: true, script: 'echo registry$registry_suffix.$image_region.aliyuncs.com/$image_namespace/$image_reponame:$image_tag').trim()
         BRANCH = sh(returnStdout: true, script: 'echo $branch').trim()
     }
 
