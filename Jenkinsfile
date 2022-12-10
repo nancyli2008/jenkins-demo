@@ -26,7 +26,7 @@ pipeline{
       stage('Package'){
           steps{
              container("maven") {
-              sh "mvn package -B -DskipTests"
+              sh "mvn -B -f `pwd`/pom.xml package -DskipTests=true"
              }
            }
          }
@@ -36,7 +36,7 @@ pipeline{
         stage('Image Build And Publish'){
           steps{
             container("kaniko") {
-                 sh "kaniko -f `pwd`/Dockerfile -c `pwd` --destination=${IMAGE} --skip-tls-verify"
+                 sh "/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --destination=${IMAGE} --skip-tls-verify"
               }
           }
        }
@@ -45,8 +45,8 @@ pipeline{
         stage('Deploy to Kubernetes') {
           steps {
             container('kubectl') {
-			  sh "sed -i  's/IMAGE/${IMAGE}/g' application-demo.yaml"
-			  sh "kubectl apply -f  application-demo.yaml"
+			  sh "sed -i 's#IMAGE#${IMAGE}#g' application-demo.yaml"
+			  sh "kubectl apply -f application-demo.yaml"
             }
           }
         }
