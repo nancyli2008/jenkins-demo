@@ -30,4 +30,4 @@ spec:
     name: application-demo
   selector:
     app: application-demo
-  type: ClusterIP
+  type: LoadBalancer
