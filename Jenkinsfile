@@ -32,7 +32,7 @@ pipeline {
         }
 
 
-        // 三つ目のstageを追加します， コンテナー作成とコマンドPushするを実行します。environmentに定義しているgroovy環境変数を使用しています
+        // 三つ目のstageを追加します， コンテナー作成とコマンドPushするを実行します。
         stage('Image Build And Publish') {
             steps {
                 container("kaniko") {
